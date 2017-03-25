@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.json({"hj":"ygy"});
+  res.json({"j":"y----gy"});
 });
 
 module.exports = router;
