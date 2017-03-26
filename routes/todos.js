@@ -1,10 +1,21 @@
 var express = require('express');
+const _ = require('lodash');
+const validator = require('validator');
+var exphbs = require('express-handlebars');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser'); //to parse json
+var mongo = require('mongodb');
+const {ObjectID} = require('mongodb');
+
 var router = express.Router();
 var {Todo} = require('../models/todo');
 var {authenticate} = require('../middleware/authenticate');
 
 
-router.post('/todos', (req, res) => {
+router.post('/', (req, res) => {
   var todo = new Todo({
     text: req.body.text
   });
@@ -16,7 +27,7 @@ router.post('/todos', (req, res) => {
   });
 });
 
-router.get('/todos', (req, res) => {
+router.get('/', (req, res) => {
   Todo.find().then((todos) => {
     res.send({todos});
   }, (e) => {
@@ -24,7 +35,7 @@ router.get('/todos', (req, res) => {
   });
 });
 
-router.get('/todos/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   var id = req.params.id;
 
   if (!ObjectID.isValid(id)) {
@@ -42,7 +53,7 @@ router.get('/todos/:id', (req, res) => {
   });
 });
 
-router.delete('/todos/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
   var id = req.params.id;
 
   if (!ObjectID.isValid(id)) {
@@ -60,7 +71,7 @@ router.delete('/todos/:id', (req, res) => {
   });
 });
 
-router.patch('/todos/:id', (req, res) => {
+router.patch('/:id', (req, res) => {
   var id = req.params.id;
   var body = _.pick(req.body, ['text', 'completed']);
 

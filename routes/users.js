@@ -1,4 +1,16 @@
 var express = require('express');
+const _ = require('lodash');
+const validator = require('validator');
+var exphbs = require('express-handlebars');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser'); //to parse json
+var mongo = require('mongodb');
+const {ObjectID} = require('mongodb');
+
+
 var router = express.Router();
 
 var {User} = require('../models/user');
@@ -7,7 +19,7 @@ var {User} = require('../models/user');
 var {authenticate} = require('../middleware/authenticate');
 
 // POST /users
-router.post('/users', (req, res) => {
+router.post('/', (req, res) => {
   var body = _.pick(req.body, ['email', 'password']);
   var user = new User(body);
 
@@ -20,11 +32,11 @@ router.post('/users', (req, res) => {
   })
 });
 
-router.get('/users/me', authenticate, (req, res) => {
+router.get('/me', authenticate, (req, res) => {
   res.send(req.user);
 });
 
-router.post('/users/login', (req, res) => {
+router.post('/login', (req, res) => {
   var body = _.pick(req.body, ['email', 'password']);
 
   User.findByCredentials(body.email, body.password).then((user) => {
@@ -36,18 +48,13 @@ router.post('/users/login', (req, res) => {
   });
 });
 
-router.delete('/users/me/token', authenticate, (req, res) => {
+router.delete('/me/token', authenticate, (req, res) => {
   req.user.removeToken(req.token).then(() => {
     res.status(200).send();
   }, () => {
     res.status(400).send();
   });
 });
-
-
-
-
-
 
 
 module.exports = router;

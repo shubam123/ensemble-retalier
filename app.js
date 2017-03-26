@@ -20,7 +20,7 @@ mongoose.connect(process.env.MONGODB_URI);
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var users = require('./routes/todos');
+var todos = require('./routes/todos');
 
 var app = express();
 
@@ -47,6 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/todos', todos);
 
 
 
