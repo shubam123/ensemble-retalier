@@ -10,6 +10,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser'); //to parse json
 var mongo = require('mongodb');
+var cors = require('cors');
 const {ObjectID} = require('mongodb');
 
 
@@ -23,6 +24,9 @@ var users = require('./routes/users');
 var todos = require('./routes/todos');
 
 var app = express();
+
+//cors
+app.use(cors());
 
 //view engine setup
 app.set('views', path.join(__dirname, 'views'));
