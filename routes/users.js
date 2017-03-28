@@ -26,7 +26,7 @@ router.post('/', (req, res) => {
   user.save().then(() => {
     return user.generateAuthToken();
   }).then((token) => {
-    var response={"status":"success","_id":user._id,"email":user.email};
+    var response={"status":"success","user":{"_id":user._id,"email":user.email}};
     res.header('x-auth', token).send(response);
   }).catch((e) => {
     res.status(400).send(e);
@@ -42,7 +42,8 @@ router.post('/login', (req, res) => {
 
   User.findByCredentials(body.email, body.password).then((user) => {
     return user.generateAuthToken().then((token) => {
-      var response={"status":"success","_id":user._id,"email":user.email};
+
+    var response={"status":"success","user":{"_id":user._id,"email":user.email}};
       res.header('x-auth', token).send(response);
     });
   }).catch((e) => {
