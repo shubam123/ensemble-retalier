@@ -52,7 +52,7 @@ router.post('/login', (req, res) => {
 
 router.delete('/me/token', authenticate, (req, res) => {
   req.user.removeToken(req.token).then(() => {
-    res.status(200).send();
+    res.status(200).send({"status":"success"});
   }, () => {
     res.status(400).send();
   });
