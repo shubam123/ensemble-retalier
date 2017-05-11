@@ -19,9 +19,26 @@ var Order = mongoose.model('order', {
       required:true
     }
   },
-  retailer_id: {
+  invoice:{
+    cost: {
+      type: Number,
+      required: true
+    },
+    products: {
+      type: Array,
+      required: true
+    }
+  },
+  retailer:{
+      retailer_id: {
       type: String,
       required: true
+    },
+
+      retailer_name: {
+      type: String,
+      required: true
+    },
   },
   placedAt: {
     type: String,

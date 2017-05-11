@@ -16,11 +16,40 @@ var UserSchema = new mongoose.Schema({
       message: '{VALUE} is not a valid email'
     }
   },
+  phone: {
+    type: Number,
+    require: true,
+    minlength: 9,
+    maxlength:12
+  },
   password: {
     type: String,
     require: true,
     minlength: 6
   },
+  sales_rep_id: {
+    type: String,
+    require: true,
+    minlength: 6
+  },
+
+  home_address: {
+    type: String
+  },
+
+  shop_address: {
+    type: String
+  },
+
+  adhaar_id: {
+    type: String
+  },
+  shop_reg_id: {
+    type: String
+  },
+
+
+
   tokens: [{
     access: {
       type: String,
