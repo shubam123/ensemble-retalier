@@ -48,7 +48,7 @@ router.get('/:id', (req, res) => {
 
 //post a new order
 router.post('/', (req, res) => {
-  var body = _.pick(req.body, ['customer.name','customer.phone','customer.email','customer.address','retailer_id','invoice.products','invoice.cost']);
+  var body = _.pick(req.body, ["customer.address","customer.email","customer.name","customer.pno","customer.pno_alt",'retailer.adhaar_id','retailer.email','retailer.home_address','retailer.phone','retailer.sales_rep_id','retailer.shop_address','retailer.shop_reg_id','retailer._id','invoice.prods','invoice.tot_cost']);
   var d = new Date();
   body.placedAt=d.toString();
   var order = new Order(body);

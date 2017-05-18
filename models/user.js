@@ -29,8 +29,7 @@ var UserSchema = new mongoose.Schema({
   },
   sales_rep_id: {
     type: String,
-    require: true,
-    minlength: 6
+    require: true
   },
 
   home_address: {
