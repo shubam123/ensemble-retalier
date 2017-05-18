@@ -15,6 +15,42 @@ var {User} = require('../models/user');
 var {authenticate} = require('../middleware/authenticate');
 
 
+//--------- to make remote api call-------------//
+var http = require('http');
+var unirest = require('unirest');
+//The url we want is `www.nodejitsu.com:1337/`
+
+
+
+
+router.get('/msg', authenticate, (req, res) => {
+
+//   var options = {
+//   host: 'http://bhashsms.com',
+//   path: '/api/sendmsg.php?user=7708528228&pass=c495ba8&sender=ENSMBL&phone='+ '7012523518' + '&text=' + 'Test%20SMS' +'&priority=ndnd&stype=normal'
+// };
+
+// var request = http.request(options, function(req) {
+// });
+// request.on('error', function(err) {
+//     // Handle error
+//     console.log(error);
+// });
+
+// request.end();
+
+var Request = unirest.get('http://bhashsms.com/api/sendmsg.php?user=7708528228&pass=c495ba8&sender=ENSMBL&phone=7012523518&text=Test%20SMS&priority=ndnd&stype=normal');
+
+Request.end(function (response) {
+  console.log(response.body);
+});
+
+res.send("aa");
+
+
+
+});
+
 
 
 //milgun sett
@@ -22,28 +58,6 @@ var api_key = 'key-f95bdec716bbb041680ce6898e807ba5';
 var domain = 'ensemblefurnitures.com';
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
-
-
-
-router.get('/mail',(req, res) => {
-
-  var data = {
-  from: 'Ensemble Furnitures <postmaster@ensemblefurnitures.com>',
-  to: 'shubamdaphnis@gmail.com',
-  subject: 'Hello',
-  text: 'Testing some Mailgun awesomness!'
-  };
-
-  mailgun.messages().send(data, function (error, body) {
-    if(error){
-      console.log(error);
-      return;
-    }
-  console.log(body);
-  res.send(body);
-  });
-
-});
 
 function send_mail(email_id,subject,message)
 {
@@ -60,11 +74,14 @@ function send_mail(email_id,subject,message)
       return;
     }
   console.log(body);
-  res.send(body);
   });
-
-
 }
+
+router.get('/mail',(req, res) => {
+  send_mail(req.query.email_id,req.query.subject,req.query.message);
+  res.send({"success":true,"message":"Mail sent"});
+  
+});
 
 
 

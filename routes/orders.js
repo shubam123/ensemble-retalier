@@ -10,6 +10,8 @@ var bodyParser = require('body-parser'); //to parse json
 var mongo = require('mongodb');
 const {ObjectID} = require('mongodb');
 
+var cors = require('cors');
+
 var router = express.Router();
 var {Order} = require('../models/order');
 var {authenticate} = require('../middleware/authenticate');
