@@ -17,6 +17,47 @@ var {Order} = require('../models/order');
 var {authenticate} = require('../middleware/authenticate');
 
 
+//--------- to make remote api call-------------//
+var unirest = require('unirest');
+
+//-----------milgun setup------------//
+var api_key = 'key-f95bdec716bbb041680ce6898e807ba5';
+var domain = 'ensemblefurnitures.com';
+var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+
+
+function send_msg(number,message) {
+  var addr = 'http://bhashsms.com/api/sendmsg.php?user=7708528228&pass=c495ba8&sender=ENSMBL&phone=' + number + '&text=' + escape(message) + '&priority=ndnd&stype=normal';
+  var Request = unirest.get(addr);
+  Request.end(function (response) {
+  console.log(response.body);
+});
+}
+
+function send_mail(email_id,subject,message)
+{
+  var data = {
+  from: 'Ensemble Furnitures <postmaster@ensemblefurnitures.com>',
+  to: email_id,
+  subject: subject,
+  text: message
+  };
+
+  mailgun.messages().send(data, function (error, body) {
+    if(error){
+      console.log(error);
+      return;
+    }
+  console.log(body);
+  });
+}
+
+
+
+
+
+
+
 //get all orders of a particular dealer, when supplied dealer's id.
 router.get('/:id', (req, res) => { 
   var id = req.params.id; // id of the dealer
@@ -56,6 +97,8 @@ router.post('/', (req, res) => {
   var order = new Order(body);
 
   order.save().then((doc) => {
+    send_msg(doc.customer.pno,"Thank you your order hass been placed. Pay 300 now, rest will be colletted later");
+    send_mail(doc.customer.email, "Ensemble Order","Thank you your order hass been placed");
     res.send(doc);
   }, (e) => {
     res.status(400).send(e);
